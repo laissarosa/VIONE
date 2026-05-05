@@ -1,0 +1,10 @@
+
+# Ignorar node_modules do backend
+#Vione/backend/node_modules/
+
+# Ignorar Dockerfiles
+#Vione/backend/dockerfile
+#Vione/frontend
+
+# Ignorar regras de organização
+Vione/RegrasDeOrganização.txt
