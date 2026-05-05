@@ -1,0 +1,71 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Usuario {
+  id        Int        @id @default(autoincrement())
+  cpf       String     @unique
+  email     String     @unique
+  senha     String
+  carts     Cart[]
+  favorites Favorite[]
+  createdAt DateTime   @default(now())
+}
+
+model Product {
+  id            String         @id @default(uuid())
+  name          String
+  category      String
+  subcategory   String
+  originalPrice Float
+  price         Float
+  discount      Int
+  sizes         String         // JSON array: '["P","M","G"]'
+  description   String?        @db.Text
+  createdAt     DateTime       @default(now())
+
+  images        ProductImage[] // ← relação 1:N
+  cartItems     CartItem[]
+  favorites     Favorite[]
+}
+
+model ProductImage {
+  id        Int     @id @default(autoincrement())
+  productId String
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  url       String  // link do Google Drive
+  position  Int     @default(0) // ordem de exibição (0 = imagem principal)
+}
+
+model Cart {
+  id        Int        @id @default(autoincrement())
+  userId    Int
+  usuario   Usuario    @relation(fields: [userId], references: [id])
+  items     CartItem[]
+  createdAt DateTime   @default(now())
+}
+
+model CartItem {
+  id        Int     @id @default(autoincrement())
+  cartId    Int
+  cart      Cart    @relation(fields: [cartId], references: [id])
+  productId String
+  product   Product @relation(fields: [productId], references: [id])
+  size      String
+  qty       Int     @default(1)
+}
+
+model Favorite {
+  id        Int     @id @default(autoincrement())
+  userId    Int
+  usuario   Usuario @relation(fields: [userId], references: [id])
+  productId String
+  product   Product @relation(fields: [productId], references: [id])
+
+  @@unique([userId, productId])
+}
