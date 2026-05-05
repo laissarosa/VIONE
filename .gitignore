@@ -1,10 +1,7 @@
 
-# Ignorar node_modules do backend
-#Vione/backend/node_modules/
-
-# Ignorar Dockerfiles
-#Vione/backend/dockerfile
-#Vione/frontend
+#Ignorar node_modules
+Vione/backend/node_modules/
+Vione/frontend_react/node_modules/
 
 # Ignorar regras de organização
 Vione/RegrasDeOrganização
